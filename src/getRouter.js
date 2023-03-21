@@ -52,7 +52,15 @@ function getRouter({ manifest , get }) {
 		// we get `extra` from `req.url` because `req.params.extra` decodes the characters
 		// and breaks dividing querystring parameters with `&`, in case `&` is one of the
 		// encoded characters of a parameter value
-		const extra = req.params.extra ? qs.parse(req.url.split('/').pop().slice(0, -5)) : {}
+		let extra = req.params.extra ? qs.parse(req.url.split('/').pop().slice(0, -5)) : {}
+		
+		// detect country code from CDN headers if available
+		const countryCode = req.headers['cf-ipcountry'] ||  // CloudFlare CDN
+							req.headers['CDN-RequestCountryCode'] || // Bunny CDN
+							req.headers['CloudFront-Viewer-Country']; // CloudFront CDN
+		 
+		if(countryCode) extra.countryCode = countryCode
+
 		if ((config || '').length) {
 			try {
 				config = JSON.parse(config)
