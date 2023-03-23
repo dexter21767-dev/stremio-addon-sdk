@@ -18,7 +18,7 @@ function getRouter({ manifest , get }) {
 			// we remove configurationRequired so the addon is installable after configuration
 			delete manifestClone.behaviorHints.configurationRequired
 			// we remove configuration page for installed addon too (could be added later to the router)
-			delete manifestClone.behaviorHints.configurable			
+			delete manifestClone.behaviorHints.configurable
 			manifestRespBuf = JSON.stringify(manifestClone)
 		}
 		res.setHeader('Content-Type', 'application/json; charset=utf-8')
@@ -41,9 +41,9 @@ function getRouter({ manifest , get }) {
 	const handlersInManifest = []
 	if (manifest.catalogs.length > 0) handlersInManifest.push('catalog')
 	manifest.resources.forEach((r) => handlersInManifest.push(r.name || r))
-	
+
 	// converting the resources array to a regular expression
-	const ResourcesRegex = handlersInManifest && handlersInManifest.length ? '(' + handlersInManifest.join('|') + ')' : '' 
+	const ResourcesRegex = handlersInManifest && handlersInManifest.length ? '(' + handlersInManifest.join('|') + ')' : ''
 
 	// Handle all resources
 	router.get(`${configPrefix}/:resource${ResourcesRegex}/:type/:id/:extra?.json`, function(req, res, next) {
@@ -53,13 +53,13 @@ function getRouter({ manifest , get }) {
 		// and breaks dividing querystring parameters with `&`, in case `&` is one of the
 		// encoded characters of a parameter value
 		let extra = req.params.extra ? qs.parse(req.url.split('/').pop().slice(0, -5)) : {}
-		
+
 		// detect country code from CDN headers if available
 		const countryCode = req.headers['cf-ipcountry'] ||  // CloudFlare CDN
 							req.headers['CDN-RequestCountryCode'] || // Bunny CDN
 							req.headers['CloudFront-Viewer-Country']; // CloudFront CDN
-		 
-		if(countryCode) extra.countryCode = countryCode
+
+		if (countryCode) extra.countryCode = countryCode
 
 		if ((config || '').length) {
 			try {

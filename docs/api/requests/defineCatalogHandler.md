@@ -41,6 +41,8 @@ If you wish to use these parameters, you'll need to specify them in `extra` for 
 
 ``skip`` - set in the `extra` object; used for catalog pagination, refers to the number of items skipped from the beginning of the catalog; the standard page size in Stremio is 100, so the `skip` value will be a multiple of 100; if you return less than 100 items, Stremio will consider this to be the end of the catalog
 
+```countryCode`` - set in the `extra` object; an [ISO 3166-1 Alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) string representing the country Code of the request, retrieved from the CDN if available, currently supported CDNs are: CloudFlare / Bunny CDN / CloudFront.
+
 
 ## Basic Example
 

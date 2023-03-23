@@ -21,6 +21,17 @@ function serveHTTP(addonInterface, opts = {}) {
 			res.setHeader('Cache-Control', 'max-age='+cacheMaxAge+', public')
 		next()
 	})
+
+	// check if there are middlewares and if it's array 
+	// Array.isArray() is used because other things than arrays have length property, like strings
+	if (opts?.middlewares?.length && Array.isArray(opts.middlewares)) {
+		opts.middlewares.forEach(middleware => {
+			//check if the middleware is a function if so add it to the router
+			if (middleware instanceof Function) app.use(middleware)
+			else console.error(`${middleware} is not a function`);
+		})
+	}
+
 	app.use(getRouter(addonInterface))
 
 	// serve static dir
