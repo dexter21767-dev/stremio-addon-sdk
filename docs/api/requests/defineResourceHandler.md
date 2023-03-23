@@ -29,6 +29,11 @@ The resolving object can also include the following cache related properties:
 ``config`` - object with user settings, see [Manifest - User Data](../responses/manifest.md#user-data)
 
 
+## Extra Parameters
+
+```countryCode`` - set in the `extra` object; an [ISO 3166-1 Alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) string representing the country Code of the request, retrieved from the CDN if available, currently supported CDNs are: CloudFlare / Bunny CDN / CloudFront.
+
+
 ## Basic Example
 
 
