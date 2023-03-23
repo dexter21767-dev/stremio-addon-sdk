@@ -28,6 +28,8 @@ function serveHTTP(addonInterface, opts = {}) {
 		opts.middlewares.forEach(middleware => {
 			//check if the middleware is a function if so add it to the router
 			if (middleware instanceof Function) app.use(middleware)
+			else if(middleware.route && middleware.function && middleware.function instanceof Function) app.use(middleware.route, middleware.function) 
+			else if(middleware.function && middleware.function instanceof Function) app.use(middleware.function)
 			else console.error(`${middleware} is not a function`);
 		})
 	}

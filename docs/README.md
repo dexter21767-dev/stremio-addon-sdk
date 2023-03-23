@@ -137,7 +137,10 @@ Starts the addon server. `options` is an object that contains:
 * `port`
 * `cacheMaxAge` (in seconds); `cacheMaxAge` means the `Cache-Control` header being set to `max-age=$cacheMaxAge`
 * `static`: path to a directory of static files to be served; e.g. `/public` 
-* `middlewares`: Array of functions to be used in the express router, will be added in the same order in the array.
+* `middlewares`: Array of functions or middleware objects to be used in the express router, will be added in the same order in the array.
+        `middleware object` object with following properties:
+            - `route`: A string or regex representing the route to attach the function to. 
+            - `function`: express middleware function.
 
 This method is also special in that it will react to certain process arguments, such as:
 
