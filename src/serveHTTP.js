@@ -22,15 +22,24 @@ function serveHTTP(addonInterface, opts = {}) {
 		next()
 	})
 
-	// check if there are middlewares and if it's array 
+	// check if there are modules and if it's array 
 	// Array.isArray() is used because other things than arrays have length property, like strings
-	if (opts?.middlewares?.length && Array.isArray(opts.middlewares)) {
-		opts.middlewares.forEach(middleware => {
+	if ((opts.modules || []).length && Array.isArray(opts.modules)) {
+		const moduleMethods = ['use', 'get', 'post', 'delete', 'put']
+		opts.modules.forEach(module => {
 			//check if the middleware is a function if so add it to the router
-			if (middleware instanceof Function) app.use(middleware)
-			else if(middleware.route && middleware.function && middleware.function instanceof Function) app.use(middleware.route, middleware.function) 
-			else if(middleware.function && middleware.function instanceof Function) app.use(middleware.function)
-			else console.error(`${middleware} is not a function`);
+			if (module instanceof Function) app.use(module)
+			else if (module.functions && (module.functions instanceof Function || ((module.functions || []).length && Array.isArray(module.functions)))) {
+				if (module.route && module.method && moduleMethods.includes(module.method.toLowerCase())) {
+					app[module.method](module.route, module.functions)
+				} else if (module.route) {
+					app.use(module.route, module.functions)
+				} else {
+					app.use(module.functions)
+				}
+			}
+			else console.error(`${module} is not a supported`)
+	
 		})
 	}
 
